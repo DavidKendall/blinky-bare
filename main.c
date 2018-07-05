@@ -1,27 +1,34 @@
+#include <stdbool.h>
 #include "MK64F12.h"
 
-#define led_blue_init() { SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK; PORTB_PCR21 = PORT_PCR_MUX(1); GPIOB_PDDR |= (1 << 21); }
-#define led_blue_toogle() { GPIOB_PTOR |= (1 << 21); }
-
-void delay(int time);
+void led_blue_init(void);
+void led_blue_toggle(void);
+void delay(int count);
 
 int main(void)
 {
-	int i = 0;
-	led_blue_init();
-	led_blue_toogle();
+    led_blue_init();
 
-    for (;;) {
-
-	led_blue_toogle();
+    while (true) {
+	led_blue_toggle();
     	delay(2000);
-        i++;
     }
     return 0;
 }
 
-void delay(int time)
-{
-	int i = 0;
-	for (i = time*1000 ; i !=0; i--) { }
+void led_blue_init(void) {
+    SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK; 
+    PORTB_PCR21 = PORT_PCR_MUX(1); 
+    GPIOB_PDDR |= (1 << 21);
+}
+
+void led_blue_toggle(void) {
+    GPIOB_PTOR |= (1 << 21); 
+}
+
+void delay(int count) {
+    int i = 0;
+    for (i = count*1000 ; i !=0; i--) {
+	/* skip */
+    }
 }
