@@ -13,8 +13,8 @@
  * See the reference manual, chapter 10, pp 243ff, and chapter 11, pp 273ff
  */ 
 #define PORTB_PCR21          (*((volatile uint32_t *)(0x4004A054u)))
-#define PORTx_PCRn_MUX_MASK  (0x0700u)
-#define MUX_ALT1_MASK        (1u << 8)
+#define PORT_PCR_MUX_MASK    (0x0700u)
+#define PORT_PCR_MUX_SHIFT   (8u)
 
 /* Register address and mask definitions for GPIO PORT B 
  * Port Data Direction Register and Port Data Output Register
@@ -24,47 +24,31 @@
 #define GPIOB_PDOR           (*((volatile uint32_t *)(0x400FF040u)))
 #define PIN21_MASK           (1u << 21)
 
-void led_blue_init(void);
-void led_blue_on(void);
-void led_blue_off(void);
-void led_blue_toggle(void);
 void delay(int count);
 
 int main(void)
 {
-    led_blue_init();
-
-    while (true) {
-	led_blue_on();
-    	delay(1000);
-	led_blue_off();
-	delay(1000);
-    }
-    return 0;
-}
-
-void led_blue_init(void) {
     /* Enable the clock to PORT B */
     SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK;
 
     /* Select the GPIO function (Alternative 1) for pin 21 of PORT B */
-    PORTB_PCR21 &= ~PORTx_PCRn_MUX_MASK;
-    PORTB_PCR21 |= MUX_ALT1_MASK;
+    PORTB_PCR21 &= ~PORT_PCR_MUX_MASK;
+    PORTB_PCR21 |= (1u << PORT_PCR_MUX_SHIFT);
 
     /* Set the data direction for pin 21 of PORT B to output */
     GPIOB_PDDR |= PIN21_MASK;
-}
 
-void led_blue_on(void) {
-    GPIOB_PDOR &= ~PIN21_MASK; 
-}
-
-void led_blue_off(void) {
-    GPIOB_PDOR |= PIN21_MASK; 
-}
-
-void led_blue_toggle(void) {
-    GPIOB_PDOR ^= PIN21_MASK; 
+    while (true) {
+        /* Turn on the blue LED */
+        GPIOB_PDOR &= ~PIN21_MASK;
+        /* Wait for about 1 second */
+    	delay(1000);
+        /* Turn off the blue LED */
+        GPIOB_PDOR |= PIN21_MASK; 
+        /* Wait for about 1 second */
+	delay(1000);
+    }
+    return 0;
 }
 
 void delay(int count) {
