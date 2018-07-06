@@ -2,7 +2,7 @@
 #25/09/2015
 
 #Toolchain and Path Configuration
-TOOLCHAIN=/home/cgdk2/.local/packages/gcc-arm-none-eabi-7-2017-q4-major/bin
+TOOLCHAIN=~/.local/packages/gcc-arm/bin
 PREFIX=$(TOOLCHAIN)/arm-none-eabi-
 CC=$(PREFIX)gcc
 LD=$(PREFIX)gcc
