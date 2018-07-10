@@ -1,2 +1,7 @@
 tags
+*.bin
+*.elf
+*.map
+*.o
+
 
