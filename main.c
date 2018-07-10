@@ -32,7 +32,7 @@ int main(void)
 }
 
 void delay(int count) {
-    int i = 0;
+    volatile int i = 0;
     for (i = count*1000 ; i !=0; i--) {
 	/* skip */
     }
