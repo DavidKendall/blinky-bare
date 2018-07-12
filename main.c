@@ -42,19 +42,19 @@ int main(void)
     /* Set the data direction for pins 21 and 22 of PORT B to output */
     GPIOB_PDDR |= (PIN21_MASK | PIN22_MASK);
 
+    /* Initialise the LEDs - blue ON, red OFF */
+    GPIOB_PDOR &= ~PIN21_MASK;
+    GPIOB_PDOR |= PIN22_MASK; 
+    /* Wait for about 1 second */
+    delay(1000);
+
     while (true) {
-        /* Turn on the blue LED */
-        GPIOB_PDOR &= ~PIN21_MASK;
-        /* Turn off the red LED */
-        GPIOB_PDOR |= PIN22_MASK; 
+        /* Toggle the blue LED */
+        GPIOB_PDOR ^= PIN21_MASK;
+        /* Toggle the red LED */
+        GPIOB_PDOR ^= PIN22_MASK; 
         /* Wait for about 1 second */
     	delay(1000);
-        /* Turn on the red LED */
-        GPIOB_PDOR &= ~PIN22_MASK;
-        /* Turn off the blue LED */
-        GPIOB_PDOR |= PIN21_MASK; 
-        /* Wait for about 1 second */
-	delay(1000);
     }
     return 0;
 }
