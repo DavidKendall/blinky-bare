@@ -18,11 +18,13 @@
 #define PORT_PCR_MUX_SHIFT   (8u)
 
 /* Register address and mask definitions for GPIO PORT B 
- * Port Data Direction Register and Port Data Output Register
+ * Port Data Direction Register, Port Data Output Register
+ * and Port Toggle Output Register
  * See the reference manual, chapter 55, pp 1757ff
  */ 
 #define GPIOB_PDDR           (*((volatile uint32_t *)(0x400FF054u)))
 #define GPIOB_PDOR           (*((volatile uint32_t *)(0x400FF040u)))
+#define GPIOB_PTOR           (*((volatile uint32_t *)(0x400FF04Cu)))
 #define PIN21_MASK           (1u << 21)
 #define PIN22_MASK           (1u << 22)
 
@@ -49,10 +51,8 @@ int main(void)
     delay(1000);
 
     while (true) {
-        /* Toggle the blue LED */
-        GPIOB_PDOR ^= PIN21_MASK;
-        /* Toggle the red LED */
-        GPIOB_PDOR ^= PIN22_MASK; 
+        /* Toggle the blue and red LEDs */
+        GPIOB_PTOR = (PIN21_MASK | PIN22_MASK);
         /* Wait for about 1 second */
     	delay(1000);
     }
